@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { BsLinkedin, BsGithub, BsYoutube, BsInstagram } from 'react-icons/bs';
+import newsletter from "../images/newsletter.png";
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
                 <div className="row align-items-center">
                     <div className="col-5">
                         <div className="footer-top-data d-flex gap-30 align-items-center">
-                            <img src="images/newsletter.png" alt="newsletter" />
+                            <img src={newsletter} alt="newsletter" />
                             <h2 className="mb-0 text-white">Sign Up for newsletter</h2>
                         </div>
                     </div>
@@ -64,11 +65,11 @@ const Footer = () => {
                     <div className="col-3">
                         <h4 className='text-white mb-4'>Information</h4>
                         <div className='footer-link d-flex flex-column'>
-                            <Link className="text-white py-2 mb-1">Privacy Policy</Link>
-                            <Link className="text-white py-2 mb-1">Refund Policy</Link>
-                            <Link className="text-white py-2 mb-1">Shipping Policy</Link>
-                            <Link className="text-white py-2 mb-1">Terms and Conditions</Link>
-                            <Link className="text-white py-2 mb-1">Blog</Link>
+                            <Link to="/privacy-policy" className="text-white py-2 mb-1">Privacy Policy</Link>
+                            <Link to="/refund-policy" className="text-white py-2 mb-1">Refund Policy</Link>
+                            <Link  to="/shipping-policy" className="text-white py-2 mb-1">Shipping Policy</Link>
+                            <Link to="/terms-and-conditions" className="text-white py-2 mb-1">Terms and Conditions</Link>
+                            <Link to="/blogs" className="text-white py-2 mb-1">Blog</Link>
                         </div>
                     </div>
                     <div className="col-3">

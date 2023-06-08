@@ -4,6 +4,7 @@ import Meta from '../components/meta';
 import ReactStars from 'react-rating-stars-component';
 import ProductCard from '../components/productCard';
 import Color from '../components/color';
+import Container from '../components/Container';
 
 const OurStore = () => {
     const [grid,setGrid] = useState(4);
@@ -15,9 +16,8 @@ const OurStore = () => {
     <>
         <Meta title={"Our Store"} />
         <BreadCrumb title="Our Store" />
-        <div className="store-warapper home-wrapper-2 py-5">
-            <div className="container">
-                <div className="row">
+        <Container class1="store-warapper home-wrapper-2 py-5">
+            <div className="row">
                     <div className="col-3">
                         <div className='filter-card mb-3'>
                             <div className="filter-title">Shop By Categories</div>
@@ -190,8 +190,7 @@ const OurStore = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+        </Container>
     </>
   )
 }
