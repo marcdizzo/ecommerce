@@ -4,8 +4,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 export const appApi = createApi({
     reducerPath: "appApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "https://ecommerce-backend-app-api.onrender.com" }),
-    // http://localhost:5000
+    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+    // https://ecommerce-backend-app-api.onrender.com
+    
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (user) => ({
