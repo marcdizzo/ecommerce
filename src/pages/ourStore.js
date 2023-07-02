@@ -5,12 +5,23 @@ import ReactStars from 'react-rating-stars-component';
 import ProductCard from '../components/productCard';
 import Color from '../components/color';
 import Container from '../components/Container';
+import axios from '../axios';
+import { useEffect } from 'react';
+import { updateProducts } from "../features/productSlice";
+import { useDispatch, useSelector } from 'react-redux';
 
 const OurStore = () => {
+    const dispatch = useDispatch();
+    const products = useSelector((state) => state.products);
     const [grid,setGrid] = useState(4);
     // const gridSetter = (i) => {
     //     setGrid(i);
     // }
+
+    // const lastProducts = products.slice(0,4);
+    useEffect(() => {
+        axios.get("/products").then(( { data } ) => dispatch(updateProducts(data)));
+      },[])
   return (
     
     <>
@@ -185,7 +196,12 @@ const OurStore = () => {
                         </div>
                         <div className="products-list mt-2 pb-5">
                            <div className="d-flex gap-10 flex-wrap">
-                                <ProductCard grid={grid} />
+                                {
+                                    products.map((product) => (
+                                        <ProductCard grid={grid} {...product} />
+                                    ))
+                                }
+                               
                            </div>
                         </div>
                     </div>

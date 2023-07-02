@@ -6,11 +6,24 @@ import ProductCard from '../components/productCard';
 import SpeacialProduct from '../components/specialProduct';
 import Container from '../components/Container';
 import { services } from "../utils/data";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { updateProducts } from "../features/productSlice";
+import axios from '../axios';
+import { useState } from 'react';
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products);
+  // const [products, setProducts] = useState(null);
+  const lastProducts = products.slice(0,4);
+  
+  useEffect(() => {
+    axios.get("/products").then(( { data }) => dispatch(updateProducts(data)));
+  },[])
   return (
     <>
-      <Container class1="homew-wrapper-1 py-5">
+      <Container class1="home-wrapper-1 py-5">
       <div className="row">
             <div className="col-6">
               <div className="main-banner position-relative">
@@ -176,10 +189,20 @@ const Home = () => {
             <div className="col-12">
               <h3 className='section-heading'>Featured Collection</h3>
             </div>
+            {/* <ProductCard /> */}
+            {
+              lastProducts.map((product) => {
+                  return(
+                    <ProductCard {...product} />
+                  )
+                     
+              }  
+                    )
+            }
+           
+           {/* <ProductCard />
            <ProductCard />
-           <ProductCard />
-           <ProductCard />
-           <ProductCard />
+           <ProductCard /> */}
           </div>
       </Container>
       <Container class1="famous-wrapper py-5 home-wrapper-2">
@@ -247,10 +270,11 @@ const Home = () => {
            
           </div>
           <div className="row">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {
+              lastProducts.map((product) => (
+                <ProductCard {...product}  />
+              ))
+            }
           </div>
       </Container>
       <Container class1="marque-wrapper py-5">

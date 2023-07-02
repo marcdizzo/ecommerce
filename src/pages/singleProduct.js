@@ -5,20 +5,51 @@ import ProductCard from '../components/productCard';
 import ReactStars from 'react-rating-stars-component';
 import ReactImageZoom from 'react-image-zoom';
 import Color from '../components/color';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { TbGitCompare } from "react-icons/tb";
 import { AiOutlineHeart } from "react-icons/ai";
 import Container from '../components/Container';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from '../axios';
+import { useEffect } from 'react';
+import { updateProducts } from '../features/productSlice';
+import Loading from '../components/loading';
+import { useAddToCartMutation } from '../services/appApi';
+import ToastMessage from '../components/ToastMessage';
 
 const SingleProduct = () => {
     
-    const [orderedProduct, setOrderedProduct] = useState(true);
-    const props = {
-        width: 500,
-         height: 500, 
-         zoomWidth: 500, 
-         img: "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
-        };
+    //  const dispatch = useDispatch();
+     const { id } = useParams();
+     const user = useSelector((state) => state.user);
+     const products = useSelector((state) => state.products);
+     const [product,setProduct] = useState(null);
+     const [similar,setSimilar] = useState(null);
+     const popularProducts = products.slice(0,4);
+     const [addToCart, { isSuccess }] = useAddToCartMutation();
+     useEffect(() => {
+        axios.get(`/products/${id}`).then(({ data }) => {
+            setProduct(data.product);
+        })
+     },[id]);
+    
+
+     if(!product){
+       return   <Loading />
+     }
+     const image = product.pictures[0].url;
+     
+     const props = {
+        width: 300,
+        height: 300, 
+        zoomWidth: 300, 
+        img: image
+       };
+     
+
+    
+    // const [orderedProduct, setOrderedProduct] = useState(true);
+    
     const copyToClipboard = (text) => {
         console.log('text', text)
         var textField = document.createElement('textarea')
@@ -30,28 +61,33 @@ const SingleProduct = () => {
       }
   return (
      <>
+        <div className='position-relative'>
+        {isSuccess && <ToastMessage   bg="info" title="Added to cart" body={`${product.name} is in your cart`}  />}
+        </div>
+        
          <Meta title={"Product Name"} />
-        <BreadCrumb title="Product Name" />
+        <BreadCrumb title={product.name} />
+        
         <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
                     <div className="col-6">
                         <div className="main-product-image">
                             <div>
-                            <ReactImageZoom className="d-flex"  {...props} />
+                              <ReactImageZoom {...props} />
                             </div>
                         </div>
                         <div className="other-product-images d-flex flex-wrap gap-15">
                                 <div>
-                                    <img src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg" alt="images" className='img-fluid' />
+                                    <img   src={product.pictures[0].url} alt="images" className='img-fluid' />
                                 </div>
                                 <div>
-                                    <img src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg" alt="images" className='img-fluid' />
+                                    <img  src={product.pictures[1].url} alt="images" className='img-fluid' />
                                 </div>
                                 <div>
-                                    <img src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg" alt="images" className='img-fluid' />
+                                    <img  src={product.pictures[0].url} alt="images" className='img-fluid' />
                                 </div>
                                 <div>
-                                    <img src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg" alt="images" className='img-fluid' />
+                                    <img  src={product.pictures[1].url} alt="images" className='img-fluid' />
                                 </div>
                         </div>
                     </div>
@@ -59,13 +95,15 @@ const SingleProduct = () => {
                         <div className='main-product-details'>
                             <div className='border-bottom'>
                             <h3 className='title'>
-                                Kids Haedphones Bulk 10 Pack Multi Colored For Students
+                                {/* Kids Haedphones Bulk 10 Pack Multi Colored For Students */}
+                                {product.name}
                             </h3>
 
                             </div>
                             <div className="border-bottom py-3">
                                 <p className="price">
-                                    $100
+                                    {/* $100 */}
+                                    ${product.price}
                                 </p>
                                 <div className="d-flex align-items-center gap-10">
                                     <ReactStars 
@@ -89,7 +127,7 @@ const SingleProduct = () => {
                                 </div>
                                 <div className='d-flex gap-10 align-items-center my-2'>
                                     <h3 className='product-heading'>Category :</h3>
-                                    <p className='product-data mb-0'>Watch</p>
+                                    <p className='product-data mb-0'>{product.category}</p>
                                 </div>
                                 <div className='d-flex gap-10 align-items-center my-2'>
                                     <h3 className='product-heading'>Tags :</h3>
@@ -97,9 +135,9 @@ const SingleProduct = () => {
                                 </div>
                                 <div className='d-flex gap-10 align-items-center my-2'>
                                     <h3 className='product-heading'>Availablity :</h3>
-                                    <p className='product-data mb-0'>In Stock</p>
+                                    <p className='product-data mb-0'>{product.quantity}pcs In Stock</p>
                                 </div>
-                                <div className='d-flex gap-10 flex-column mt-2 mb-3'>
+                                {/* <div className='d-flex gap-10 flex-column mt-2 mb-3'>
                                     <h3 className='product-heading'>Size </h3>
                                     <div className='d-flex flex-wrap gap-15'>
                                         <span className="badge text-dark border border-secondary border-1">S</span>
@@ -111,7 +149,7 @@ const SingleProduct = () => {
                                 <div className='d-flex gap-10 flex-column mt-2 mb-3'>
                                     <h3 className='product-heading'>Color </h3>
                                     <Color />
-                                </div>
+                                </div> */}
                                 <div className='d-flex gap-10 align-items-center flex-row mt-2 mb-3'>
                                     <h3 className='product-heading'>Quantity </h3>
                                     <div className=''>
@@ -122,13 +160,14 @@ const SingleProduct = () => {
                                         />
                                     </div>
                                     <div className='d-flex align-items-center gap-30 ms-5'>
-                                        <button type='submit' className="button border-0">
+                                        <button type='submit' onClick={() => addToCart({ userId: user._id, productId: id, price: product.price, image: product.pictures[0].url })} className="button border-0">
                                             Add to cart
                                         </button>
                                         <button className='button border-0 signup'>
                                             Buy it Now
                                         </button>
                                     </div>
+                                    
                                 </div>
                                 <div className="d-flex align-items-center gap-15">
                                     <div>
@@ -164,6 +203,7 @@ const SingleProduct = () => {
                     </div>
                 </div>
         </Container>
+       
         <Container class1="description-wrapper py-5 home-wrapper-2">
                 <div className="row">
                     <div className="col-12">
@@ -171,12 +211,7 @@ const SingleProduct = () => {
                         <h4>Description</h4>
                         <div className='description-inner-wrapper'>
                         <p className="p-3">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem suscipit, consequatur sed inventore vel veniam iusto 
-                            dolorem corporis? Explicabo quod aspernatur 
-                            inventore atque et tempora, mollitia ut dicta 
-                            sit. Voluptas itaque numquam, eaque voluptatem, 
-                            tempora laboriosam minus explicabo,
-                             earum accusamus officiis quas ea hic adipisci possimus ad deserunt rerum vitae?
+                           {product.description}
                         </p>
                         </div>
                     </div>
@@ -200,13 +235,13 @@ const SingleProduct = () => {
                                 <p className='mb-0'>Based on 2 Reviews</p>
                                 </div>
                             </div>
-                           {
+                           {/* {
                                 orderedProduct && (
                                     <div>
                                         <a className='text-dark text-decoration-underline' href="#">Write a Review</a>
                                     </div>
                                 )
-                           }
+                           } */}
                         </div>
                         <div  className="review-form py-4">
                         <h4 className='mb-2'>Write a Review</h4>
@@ -261,10 +296,11 @@ const SingleProduct = () => {
               <h3 className='section-heading'>Our Popular Products</h3>
             </div>
             <div className="row">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {
+                popularProducts.map((product) => (
+                    <ProductCard {...product} />
+                ))
+            }
           </div>
           </div>
         </Container>

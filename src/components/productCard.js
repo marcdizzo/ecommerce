@@ -9,26 +9,30 @@ import watch2 from "../images/watch-1.avif";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 
-const ProductCard = (props) => {
+const ProductCard = ({_id,name,pictures,price, description},props) => {
     const { grid } = props;
     let location = useLocation();
   return (
     <>
-        <div className={` ${location.pathname === "/store" ? `gr-${grid}` : "col-3"} `}>
-        <Link to="/product/:id" className="product-card position-relative">
+        
+        {/* `/product/${_id}` */}
+        
+        <div  className={` ${location.pathname === "/store" ? `gr-${grid}` : "col-3"} `}>
+        <Link to={`${location.pathname == "/store" ? `/product/${_id}` : `/product/${_id}`}`} className="product-card position-relative">
             <div className="wishlist-icon position-absolute">
                 <button className='border-0 bg-transparent'>
                     <img src={wish} alt="wishlist" />
                 </button>
             </div>
             <div className="product-image">
-                <img src={watch} className='img-fluid' alt="watch" />
-                <img src={watch2} className='img-fluid' alt="watch" />
+                <img src={pictures[0].url} className='img-fluid' alt="watch" />
+                <img src={pictures[1].url} className='img-fluid' alt="watch" />
             </div>
             <div className="product-details">
                 <h6 className="brand">Havels</h6>
                 <h5 className='product-title'>
-                    Kids headphones bulk10 pack multi coloured for students
+                    {/* Kids headphones bulk10 pack multi coloured for students */}
+                    {name}
                 </h5>
                 <ReactStars 
                 count={5} 
@@ -37,11 +41,15 @@ const ProductCard = (props) => {
                 edit={false} 
                 activeColor="#ffd700" />
                 <p className={`description ${grid === 12 ? "d-block" : "d-none"}`}>
-                   Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                   {/* Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
                    Numquam cupiditate reprehenderit eveniet iste? Sequi, 
-                   animi vel a consectetur amet praesentium!
+                   animi vel a consectetur amet praesentium! */}
+                   {description}
                 </p>
-                <p className="price">$100.00</p>
+                <p className="price">
+                    {/* $100.00 */}
+                    ${price}
+                </p>
             </div>
             <div className="action-bar position-absolute">
                 <div className="d-flex flex-column">
@@ -58,8 +66,8 @@ const ProductCard = (props) => {
             </div>
         </Link>
     </div>
-    <div className={` ${location.pathname === "/store" ? `gr-${grid}` : "col-3"} `}>
-        <Link className="product-card position-relative">
+    {/* <div className={` ${location.pathname === "/store" ? `gr-${grid}` : "col-3"} `}>
+        <Link to={`${location.pathname === "/store" ? "/product/:id" : "product/:id"}`} className="product-card position-relative">
             <div className="wishlist-icon position-absolute">
                 <Link>
                     <img src={wish} alt="wishlist" />
@@ -101,7 +109,7 @@ const ProductCard = (props) => {
                 </div>
             </div>
         </Link>
-    </div>
+    </div> */}
     </>
   )
 }

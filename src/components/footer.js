@@ -2,8 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { BsLinkedin, BsGithub, BsYoutube, BsInstagram } from 'react-icons/bs';
 import newsletter from "../images/newsletter.png";
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const Footer = () => {
+    const user = useSelector((state) => state.user);
+    const [email,setEmail] = useState("");
   return (
     <>
         <footer className='py-4'>
@@ -16,14 +20,32 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="col-7">
-                    <div className="input-group">
-                         <input type="text" className="form-control py-1" 
-                         placeholder="Enter your email address" 
-                         aria-label="Enter your email address" aria-describedby="basic-addon2"/>
-                         <span className="input-group-text p-2" id="basic-addon2">
-                           Subscribe
-                        </span>
-                    </div>
+                        {
+                            user && (
+                                <div className="input-group">
+                                        <input type="text" className="form-control border-0 py-1" 
+                                        placeholder="Your email" value={user.email} onChange={(e) => setEmail(e.target.value)}
+                                        id='floatingInputGroup1' aria-describedby="basic-addon2"/>
+                                    <span className="input-group-span p-1" id="basic-addon2">
+                                        <Link to="/subscribe" className='input-group-text'>Subscribe</Link>
+                                    </span>
+                                    
+                                </div>
+                            )
+                        }
+                        {
+                            !user && (
+                                <div className="input-group">
+                                        <input type="text" className="form-control border-0 py-1" 
+                                        placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.value)}
+                                        id='floatingInputGroup1' aria-describedby="basic-addon2"/>
+                                    <span className="input-group-span p-1" id="basic-addon2">
+                                        <Link to="/subscribe" className='input-group-text'>Subscribe</Link>
+                                    </span>
+                                    
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>
